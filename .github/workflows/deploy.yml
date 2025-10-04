@@ -21,14 +21,18 @@ jobs:
           hugo-version: 'latest'
           extended: true
 
-      # 3. Bygg nettstedet
+      # 3. Rygg opp i cache og gamle filer
+      - name: Clean Hugo resources
+        run: rm -rf resources/ public/
+
+      # 4. Bygg nettstedet
       - name: Build site
         run: |
           hugo --minify \
                --environment production \
                --baseURL "https://kolbergvolley.no/"
 
-      # 4. Deploy til server (samme som du brukte før)
+      # 5. Deploy til server (samme som du brukte før)
       - name: Deploy via SSH
         uses: easingthemes/ssh-deploy@v2.2.11
         env:
