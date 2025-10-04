@@ -1,0 +1,38 @@
+name: Build and Deploy Hugo site
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      # 1. Sjekk ut repoet
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      # 2. Installer Hugo
+      - name: Setup Hugo
+        uses: peaceiris/actions-hugo@v3
+        with:
+          hugo-version: 'latest'
+          extended: true
+
+      # 3. Bygg nettstedet
+      - name: Build site
+        run: hugo --minify
+
+      # 4. Deploy til server (samme som du brukte før)
+      - name: Deploy via SSH
+        uses: easingthemes/ssh-deploy@v2.2.11
+        env:
+          SSH_PRIVATE_KEY: ${{ secrets.DEPLOY_KEY }}
+          ARGS: "-rltgoDzvO"
+          SOURCE: "public/"
+          REMOTE_HOST: ${{ secrets.DEPLOY_SERVER }}
+          REMOTE_USER: ${{ secrets.DEPLOY_USER }}
+          TARGET: ${{ secrets.DEPLOY_PATH }}
+          EXCLUDE: "/.git/, /node_modules/"
