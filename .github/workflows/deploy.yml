@@ -28,31 +28,13 @@ jobs:
       - name: Clean Hugo resources
         run: rm -rf resources/ public/
 
-      - name: Hugo diagnostics
-        run: |
-          echo "== Hugo version ==" && hugo version
-          echo "== Hugo env ==" && hugo env
-          echo "== Config (first 120 lines) ==" && hugo config | sed -n '1,120p'
-      
-          echo "== Draft/future/expired (first 40 each) =="
-          (hugo list drafts  || true) | sed -n '1,40p'
-          (hugo list future  || true) | sed -n '1,40p'
-          (hugo list expired || true) | sed -n '1,40p'
-
+      # 4. Bugg hugo site
       - name: Build (prod)
         run: |
           hugo --minify \
                --environment production \
                --baseURL "https://kolbergvolley.no/" \
                --logLevel debug
-
-      - name: Inspect output
-        run: |
-          OUTDIR="public"; [ -d www ] && OUTDIR="www"
-          echo "== OUTDIR: $OUTDIR =="
-          echo "HTML count:" && find "$OUTDIR" -name '*.html' | wc -l
-          echo "Top-level files:" && find "$OUTDIR" -maxdepth 2 -type f | sed -n '1,120p'
-          echo "Check for localhost:" && (grep -RIn "http://localhost:1313" "$OUTDIR" || true)
 
       # 5. Deploy til server (samme som du brukte før)
       - name: Deploy via SSH
