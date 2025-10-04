@@ -23,7 +23,9 @@ jobs:
 
       # 3. Bygg nettstedet
       - name: Build site
-        run: hugo --minify
+        run:     hugo --minify \
+         --environment production \
+         --baseURL "https://kolbergvolley.no/"
 
       # 4. Deploy til server (samme som du brukte før)
       - name: Deploy via SSH
