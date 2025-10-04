@@ -39,7 +39,7 @@ jobs:
           echo "==== Run with diagnostics (no deploy) ===="
           # Først: strengt prod-build
           hugo --minify --environment production --baseURL "https://kolbergvolley.no/" \
-               --printI18nWarnings --printPathWarnings --printUnusedTemplates --debug
+               --printI18nWarnings --printPathWarnings --printUnusedTemplates --verbose
           echo
           echo "==== Telle filer i output ===="
           OUTDIR="public"; [ -d www ] && OUTDIR="www"
