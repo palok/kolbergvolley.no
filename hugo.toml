@@ -1,4 +1,5 @@
 baseURL = 'https://kolbergvolley.no/'
+canonifyURLs = true
 languageCode = "nb-no"
 title = "Kolberg Volleyballklubb"
 theme = "ananke"
