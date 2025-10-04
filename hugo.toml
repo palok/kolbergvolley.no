@@ -1,0 +1,54 @@
+baseURL = 'https://kolbergvolley.no/'
+languageCode = "nb-no"
+title = "Kolberg Volleyballklubb"
+theme = "ananke"
+enableEmoji = true
+pluralizelisttitles = false
+
+[markup.goldmark.parser.attribute]
+block = true
+title = true
+
+[markup.goldmark.renderer]
+unsafe = true
+
+[params]
+  # Disable showing recent posts on home page
+  mainSections = []
+  site_logo = "images/logo-100x100.png"
+  background_color_class = "bg-kolberg-green"
+  custom_css = ["custom.css"]
+  # facebook = "https://www.facebook.com/volleyballklubben"
+  # instagram = "https://www.instagram.com/volleyballklubben"
+
+[menu]
+  [[menu.main]]
+    identifier = "lagene"
+    name = "Lagene"
+    url = "/informasjon/lagene/"
+    weight = 10
+  [[menu.main]]
+    identifier = "treningstider"
+    name = "Treningstider"
+    url = "/informasjon/treningstider/"
+    weight = 20
+  [[menu.main]]
+    identifier = "hvordan-bli-medlem"
+    name = "Hvordan bli medlem"
+    url = "/informasjon/hvordan-bli-medlem/"
+    weight = 30
+  [[menu.main]]
+    identifier = "kontakt"
+    name = "Kontakt"
+    url = "/informasjon/kontakt/"
+    weight = 40
+
+[params.ananke.social.follow]
+new_window_icon = true
+networks = ["facebook", "instagram"]
+
+[params.ananke.social.networks.facebook]
+profile = "https://www.facebook.com/FredrikstadKolbergVolleyballKlubb/?locale=nb_NO"
+
+[params.ananke.social.networks.instagram]
+profile = "https://www.instagram.com/kolbergvolleyball/"
