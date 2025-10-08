@@ -59,7 +59,6 @@ Antall treninger i uka: 2 - [Se treningstider](/informasjon/treningstider/#j17)
 Seriespill: Ungdomsserien Nivå 1.  
 Kontaktperson: Alexander Ness  
 Epost: aleksander.dev@gmail.com  
-Telefon: 99 99 99 99
 
 ## U15 - Jenter
 
@@ -69,8 +68,7 @@ Jentene vil i år spille i nivå 2 i seriespillet.
 Antall treninger i uka: 2 - [Se treningstider](/informasjon/treningstider/#j15)  
 Seriespill: Ungdomsserien Nivå 2.  
 Kontaktperson: Ali Mohammadi  
-Epost: janam1011@outlook.com
-Telefon: 99 99 99 99
+Epost: janam1011@outlook.com  
 
 ## U13 - Gutter
 
@@ -81,5 +79,5 @@ Gutterne vil i år spille minivolleyballturneringer (3 mot 3).
 Antall treninger i uka: 2 - [Se treningstider](/informasjon/treningstider/#g13)  
 Seriespill: Minivolleyball.  
 Kontaktperson: Sverre Slefsaker  
-Epost: slefsaker@hotmail.com
+Epost: slefsaker@hotmail.com  
 Telefon: 480 81 615
