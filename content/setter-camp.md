@@ -11,7 +11,7 @@ Vil du utvikle deg som opplegger og lære fra en av de beste i Norge?
 
 Oppleggeren er lagets playmaker – den som styrer spillet, setter rytmen og får laget til å flyte. Det krever presisjon, forståelse, lederskap og guts – og alt dette får du jobbe med på setter-campen.
 
-📅 Fredag 29. november  
+📅 Lørdag 29. november  
 🕙 10:00–14:30  
 📍 [Kongstenhallen i Fredrikstad](/informasjon/hjemmebane/)  
 👥 For U17 og U19 (jenter og gutter)  
