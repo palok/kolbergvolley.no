@@ -3,6 +3,8 @@ title = "Setter-camp med Vitor Macedo 29.11.25"
 draft = false
 +++
 
+## ‼️ Setter-campen er nå fulltegnet ‼️
+
 ![Setter-camp med Vitor](/images/setter-camp-promo.png "Setter-camp med Vitor Macedo")
 
 Vil du utvikle deg som opplegger og lære fra en av de beste i Norge?  
@@ -23,7 +25,5 @@ Dette er en unik sjanse til å finpusse teknikken, forstå spillet bedre – og 
 
 Vi kjører 2 økter a 2 timer med en halvtimes pause mellom. Lett servering av mat i pausen.
 
-### 👉 [Meld deg på nå på isonen.no](https://isonen.no/event/cmghniaao01ef7g01gmv00394/) 
-
-### Begrenset antall plasser - plassene fylles raskt!
+### 👉 ~~[Meld deg på nå på isonen.no](https://isonen.no/event/cmghniaao01ef7g01gmv00394/)~~  (Fulltegnet)
 
