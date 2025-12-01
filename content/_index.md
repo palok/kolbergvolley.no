@@ -4,8 +4,6 @@ draft = false
 featured_image = "/images/kolberg-forside.jpg"
 +++
 
-### NYHET: 🌟[FULLT! Kolberg arrangerer Setter-camp med Vitor Macedo](/setter-camp)🌟
-
 Volleyballklubben i Fredrikstad med over 100 medlemmer!
 Vi har lag for 13-åringer helt til senior, og satser på lagånd, mestring og moro på banen. Enten du er nybegynner eller erfaren, er du hjertelig velkommen til å bli en del av vårt fellesskap!
 
