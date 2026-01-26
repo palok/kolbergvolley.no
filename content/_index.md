@@ -20,3 +20,5 @@ Vi har lag for 13-åringer helt til senior, og satser på lagånd, mestring og m
 [Hjemmebane](/informasjon/hjemmebane/)
 
 Les nyheter fra klubben på [Facebook](https://www.facebook.com/FredrikstadKolbergVolleyballKlubb/?locale=nb_NO)
+
+[Sett som grasrotmottaker hos Norsk Tipping](/informasjon/grasrot/)
