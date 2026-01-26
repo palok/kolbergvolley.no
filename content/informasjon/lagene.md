@@ -72,7 +72,7 @@ Epost: janam1011@outlook.com
 
 ## U13 - Gutter
 
-JU13 laget er helt nyoppstartet før 25/26 sesongen. Dette er for gutter som er født etter 2012. Pr i dag består denne gruppa av 5 utøvere. 
+GU13 laget er helt nyoppstartet før 25/26 sesongen. Dette er for gutter som er født etter 2012. Pr i dag består denne gruppa av 8 utøvere. 
 **Laget ønsker seg flere utøvere!** Ta kontakt for prøvespill :slightly_smiling_face:  
 Gutterne vil i år spille minivolleyballturneringer (3 mot 3). 
 
