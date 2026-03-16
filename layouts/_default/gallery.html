@@ -1,0 +1,138 @@
+{{ define "header" }}{{ partials.Include "page-header.html" . }}{{ end }}
+{{ define "main" }}
+  {{ $galleryDir := "static/images/nm-u19" }}
+  {{ $images := slice }}
+  {{ range sort (readDir $galleryDir) "Name" }}
+    {{ if not .IsDir }}
+      {{ $ext := lower (path.Ext .Name) }}
+      {{ if in (slice ".jpg" ".jpeg" ".png" ".webp" ".gif" ".avif") $ext }}
+        {{ $encodedName := replace (replace (replace .Name " " "%20") "(" "%28") ")" "%29" }}
+        {{ $src := printf "/images/nm-u19/%s" $encodedName }}
+        {{ $images = $images | append (dict "name" .Name "src" $src) }}
+      {{ end }}
+    {{ end }}
+  {{ end }}
+
+  <div class="flex-l mt2 mw9 center">
+    <article class="center cf pv5 ph3 ph4-ns mw9">
+      <header class="mb4">
+        <h1 class="f1">
+          {{ .Title }}
+        </h1>
+        <div class="nested-copy-line-height lh-copy f4 nested-links {{ $.Param "text_color" | compare.Default "mid-gray" }}">
+          {{ .Content }}
+        </div>
+      </header>
+
+      {{ if gt (len $images) 0 }}
+        <section class="nm-gallery" aria-label="{{ .Title }}">
+          {{ range $index, $image := $images }}
+            <button
+              class="nm-gallery__item"
+              type="button"
+              data-gallery-index="{{ $index }}"
+              data-gallery-src="{{ $image.src }}"
+              data-gallery-alt="Bilde {{ add $index 1 }} fra {{ $.Title }}"
+              aria-label="Åpne bilde {{ add $index 1 }}"
+            >
+              <img
+                class="nm-gallery__image"
+                src="{{ $image.src }}"
+                alt="Bilde {{ add $index 1 }} fra {{ $.Title }}"
+                loading="lazy"
+              >
+            </button>
+          {{ end }}
+        </section>
+
+        <div class="nm-lightbox" data-gallery-lightbox hidden>
+          <div class="nm-lightbox__backdrop" data-gallery-close></div>
+          <div class="nm-lightbox__dialog" role="dialog" aria-modal="true" aria-label="{{ .Title }}">
+            <button class="nm-lightbox__close" type="button" data-gallery-close aria-label="Lukk bildevisning">&times;</button>
+            <button class="nm-lightbox__nav nm-lightbox__nav--prev" type="button" data-gallery-prev aria-label="Forrige bilde">&#8249;</button>
+            <figure class="nm-lightbox__figure">
+              <img class="nm-lightbox__image" src="" alt="" data-gallery-image>
+            </figure>
+            <button class="nm-lightbox__nav nm-lightbox__nav--next" type="button" data-gallery-next aria-label="Neste bilde">&#8250;</button>
+          </div>
+        </div>
+
+        <script>
+          (() => {
+            const items = Array.from(document.querySelectorAll("[data-gallery-index]"));
+            const lightbox = document.querySelector("[data-gallery-lightbox]");
+            if (!items.length || !lightbox) return;
+
+            const lightboxImage = lightbox.querySelector("[data-gallery-image]");
+            const closeButtons = lightbox.querySelectorAll("[data-gallery-close]");
+            const prevButton = lightbox.querySelector("[data-gallery-prev]");
+            const nextButton = lightbox.querySelector("[data-gallery-next]");
+            let activeIndex = 0;
+            let lastTrigger = null;
+            let touchStartX = 0;
+            let touchDeltaX = 0;
+
+            const updateImage = (index) => {
+              const item = items[index];
+              if (!item) return;
+              activeIndex = index;
+              lightboxImage.src = item.dataset.gallerySrc;
+              lightboxImage.alt = item.dataset.galleryAlt;
+            };
+
+            const openLightbox = (index, trigger) => {
+              lastTrigger = trigger;
+              updateImage(index);
+              lightbox.hidden = false;
+              document.body.classList.add("nm-lightbox-open");
+            };
+
+            const closeLightbox = () => {
+              lightbox.hidden = true;
+              document.body.classList.remove("nm-lightbox-open");
+              if (lastTrigger) lastTrigger.focus();
+            };
+
+            const showNext = () => updateImage((activeIndex + 1) % items.length);
+            const showPrev = () => updateImage((activeIndex - 1 + items.length) % items.length);
+
+            items.forEach((item, index) => {
+              item.addEventListener("click", () => openLightbox(index, item));
+            });
+
+            closeButtons.forEach((button) => {
+              button.addEventListener("click", closeLightbox);
+            });
+
+            prevButton.addEventListener("click", showPrev);
+            nextButton.addEventListener("click", showNext);
+
+            document.addEventListener("keydown", (event) => {
+              if (lightbox.hidden) return;
+              if (event.key === "Escape") closeLightbox();
+              if (event.key === "ArrowLeft") showPrev();
+              if (event.key === "ArrowRight") showNext();
+            });
+
+            lightbox.addEventListener("touchstart", (event) => {
+              touchStartX = event.changedTouches[0].clientX;
+              touchDeltaX = 0;
+            }, { passive: true });
+
+            lightbox.addEventListener("touchmove", (event) => {
+              touchDeltaX = event.changedTouches[0].clientX - touchStartX;
+            }, { passive: true });
+
+            lightbox.addEventListener("touchend", () => {
+              if (Math.abs(touchDeltaX) < 40) return;
+              if (touchDeltaX < 0) showNext();
+              if (touchDeltaX > 0) showPrev();
+            });
+          })();
+        </script>
+      {{ else }}
+        <p class="f4 mid-gray">Ingen bildefiler ble funnet i galleriet.</p>
+      {{ end }}
+    </article>
+  </div>
+{{ end }}
