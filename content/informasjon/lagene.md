@@ -18,6 +18,15 @@ Kontaktperson: Pål Oliver Kristiansen
 Epost: paal.oliver@gmail.com  
 Telefon: 92 22 60 41  
 
+## Nybegynner
+
+Nybegynner er en gruppe for deg som har spilt litt tidligere eller ønsker å prøve volleyball i organisert form for første gang. Denne gruppen tar i mot spillere i alle aldre. En fin måte å komme i gang med volleyball og prøve ut denne flotte sporten på. Ta kontakt for for å bli med :slightly_smiling_face:
+
+Antall treninger i uka: 1 - [Se treningstider](/informasjon/treningstider/#nybegynner)  
+Kontaktperson: Pål Oliver Kristiansen  
+Epost: paal.oliver@gmail.com  
+Telefon: 92 22 60 41 
+
 ## U19 - Gutter
 
 GU19-gruppa er for spillere født etter 2006. Pr i dag består denne gruppa av 22 utøvere. I år vil vi stille med 2 lag i seriespillet. **Laget ønsker seg flere midtspillere!** Ta kontakt for prøvespill :slightly_smiling_face:

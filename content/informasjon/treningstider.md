@@ -38,6 +38,10 @@ For 2025/2026 sesongen har Kolberg følgende treningstider
 * **Mandag** 17:30-19:00
 * **Torsdag** 17:00-18:30
 
+### Nybegynner
+
+* **Torsdag** 20:30-22:00
+
 ### Åpen hall *)
 
 * **Torsdag** 20:30-22:00
