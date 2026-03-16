@@ -8,7 +8,8 @@
       {{ if in (slice ".jpg" ".jpeg" ".png" ".webp" ".gif" ".avif") $ext }}
         {{ $encodedName := replace (replace (replace .Name " " "%20") "(" "%28") ")" "%29" }}
         {{ $src := printf "/images/nm-u19/%s" $encodedName }}
-        {{ $images = $images | append (dict "name" .Name "src" $src) }}
+        {{ $thumbSrc := printf "/images/nm-u19/thumbs/%s" $encodedName }}
+        {{ $images = $images | append (dict "name" .Name "src" $src "thumbSrc" $thumbSrc) }}
       {{ end }}
     {{ end }}
   {{ end }}
@@ -37,7 +38,7 @@
             >
               <img
                 class="nm-gallery__image"
-                src="{{ $image.src }}"
+                src="{{ $image.thumbSrc }}"
                 alt="Bilde {{ add $index 1 }} fra {{ $.Title }}"
                 loading="lazy"
               >
