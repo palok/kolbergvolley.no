@@ -16,7 +16,7 @@ Fyll ut [innmeldingsskjemaet for senior](https://docs.google.com/forms/d/e/1FAIp
 
 ### Hva koster det å bli medlem?
 
-For å trene og spille i Kolberg Volleyballklubb er det 3 elementer å forholde seg til:
+For å trene og spille i Kolberg Volleyballklubb er det 3 elementer å forholde seg til (for 2025/2026 sesongen):
 
 Klubbkontigent: for medlemskap i klubben - 300kr /år  
 Treningsavgift: for organisert trening i klubben - 1100kr /halvår  
