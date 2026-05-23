@@ -86,7 +86,7 @@ Pr i dag består denne gruppa av 4 utøvere.
 **Laget ønsker seg flere utøvere!**  
 Neste sesong vil guttene spille [teen-volley](https://volleyball.no/teenvolley/) eller i U15 serien.
 
-Antall treninger i uka: 2 - [Se treningstider](/informasjon/treningstider/#j15)  
+Antall treninger i uka: 1 - [Se treningstider](/informasjon/treningstider/#j15)  
 Seriespill: Teen Volley eller U15 serien  
 Kontaktperson: Nina Kristiansen
 Epost: nina.nilsen@gmail.com  
