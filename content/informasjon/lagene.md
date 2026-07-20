@@ -3,7 +3,7 @@ title = "Lagene"
 draft = false
 +++
 
-For 2025/2026 sesongen har Kolberg følgende lag
+For 2026/2027 sesongen har Kolberg følgende lag
 
 ## Senior Herrer - 4. divisjon
 
