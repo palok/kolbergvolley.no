@@ -4,7 +4,7 @@ draft = false
 +++
 
 All trening foregår i [Kongstenhallen](/informasjon/hjemmebane/).
-For 2025/2026 sesongen har Kolberg følgende treningstider
+For 2026/2027 sesongen har Kolberg følgende treningstider
 
 ### G19 hvit & Senior Herrer 4.div {#g19}
 
