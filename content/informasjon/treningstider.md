@@ -6,49 +6,53 @@ draft = false
 All trening foregår i [Kongstenhallen](/informasjon/hjemmebane/).
 For 2025/2026 sesongen har Kolberg følgende treningstider
 
-### G19 & Senior Herrer {#g19}
+### G19 hvit & Senior Herrer 4.div {#g19}
 
-* **Mandag** 19:00-21:00 (2 baner)
-* **Onsdag** 18:00-20:00 (2 baner)
-* **Fredag** 17:30-19:30 (2 baner)
+* **Mandag** 20:30-22:00 (2 baner)
+* **Onsdag** 17:30-19:00 (2 baner)
+* **Torsdag** 20:00-22:00 (2 baner)
+
+### Herrer 5.div 
+
+* **Mandag** 20:30-22:00
+
+### G19 grønn
+
+* **Mandag** 19:00-20:30
+* **Tirsdag** 18:00-19:30
+* **Torsdag** 20:00-22:00
 
 ### J19
 
-* **Mandag** 17:30-19:00
-* **Onsdag** 17:00-18:30
-
-### G17
-
-* **Mandag** 17:30-19:00
-* **Onsdag** 17:00-19:00
-* **Torsdag** 17:00-18:30
+* **Mandag** 19:00-20:30
+* **Onsdag** 17:30-19:00
 
 ### J17
 
-* **Tirsdag** 16:00-18:00
-* **Torsdag** 16:30-18:30
+* **Mandag** 17:30-19:00
+* **Tirsdag** 18:00-19:30
+* **Onsdag** 16:00-17:30
 
 ### J15
 
-* **Tirsdag** 16:30-18:00
-* **Fredag** 17:30-19:00
+* **Mandag** 17:30-19:00
+* **Tirsdag** 18:00-19:30
 
 ### G15
 
-* **Onsdag** 16:30-18:00
+* **Mandag** 19:00-20:30
+* **Onsdag** 16:00-17:30
 
 ### G13
 
 * **Mandag** 17:30-19:00
-* **Torsdag** 17:00-18:30
+* **Onsdag** 16:00-17:30
 
-### Nybegynner
 
-* **Torsdag** 20:30-22:00
 
 ### Åpen hall *)
 
-* **Torsdag** 20:30-22:00
+* Åpen hall (og nybegynner) utgår 26/27 sesongen fordi kommunen tok vekk 30% treningstid i forhold til forrige sesong.
 
 
 *) Åpen hall er et tilbud hvor alle medlemmer er velkommen å komme og trene.

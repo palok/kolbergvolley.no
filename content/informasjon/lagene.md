@@ -5,7 +5,7 @@ draft = false
 
 For 2025/2026 sesongen har Kolberg følgende lag
 
-## Senior Herrer
+## Senior Herrer - 4. divisjon
 
 <!--{{< figure src="/images/gu19.jpg" alt="GU19" class="fr ml3 mb3 w-40" >}}-->
 
@@ -13,51 +13,50 @@ Seniorlaget spiller i 4. divisjon. Laget består av en blanding av seniorer (fø
 **Laget ønsker seg flere seniorspillere!** Ta kontakt for prøvespill :slightly_smiling_face:
 
 Antall treninger i uka: 3 - [Se treningstider](/informasjon/treningstider/#g19)  
-Divisjon: [4. divisjon avd. 1](https://kamper.volleyball.no/standings?seasonId=201063&tournamentId=441425)  
+Divisjon: 4. divisjon avd. 1<!--[4. divisjon avd. 1](https://kamper.volleyball.no/standings?seasonId=201063&tournamentId=441425)-->  
 Kontaktperson: Pål Oliver Kristiansen  
 Epost: paal.oliver@gmail.com  
-Telefon: 92 22 60 41  
+Telefon: 92 22 60 41
 
-## Nybegynner
+## Senior Herrer - 5. divisjon
 
-Nybegynner er en gruppe for deg som har spilt litt tidligere eller ønsker å prøve volleyball i organisert form for første gang. Denne gruppen tar i mot spillere i alle aldre. En fin måte å komme i gang med volleyball og prøve ut denne flotte sporten på. Ta kontakt for for å bli med :slightly_smiling_face:
+Nytt seniorlag for 26/27 sesongen. Godt voksne utøvere med variert erfaring. Lavterskeltilbud med fokus på å ha det gøy. **Laget ønsker seg flere seniorer!** Ta kontakt for prøvespill :slightly_smiling_face:
 
-Antall treninger i uka: 1 - [Se treningstider](/informasjon/treningstider/#nybegynner)  
+Antall treninger i uka: 1 (foreløpig) - [Se treningstider](/informasjon/treningstider/#g19)  
+Divisjon: 5. divisjon <!--[4. divisjon avd. 1](https://kamper.volleyball.no/standings?seasonId=201063&tournamentId=441425)-->  
 Kontaktperson: Pål Oliver Kristiansen  
 Epost: paal.oliver@gmail.com  
-Telefon: 92 22 60 41 
+Telefon: 92 22 60 41
 
-## U19 - Gutter
+## U19 - Gutter Hvit
 
-GU19-gruppa er for spillere født etter 2006. Pr i dag består denne gruppa av 22 utøvere. I år vil vi stille med 2 lag i seriespillet. **Laget ønsker seg flere midtspillere!** Ta kontakt for prøvespill :slightly_smiling_face:
+GU19-hvit gruppa er for spillere født 2008. 
 
 Antall treninger i uka: 3 - [Se treningstider](/informasjon/treningstider/#g19)  
-Seriespill: Ungdomsserien Nivå 1, 2 lag.  
+Seriespill: Ungdomsserien Nivå 1.  
 Kontaktperson: Pål Oliver Kristiansen  
 Epost: paal.oliver@gmail.com  
 Telefon: 92 22 60 41  
 
-## U19 - Jenter
+## U19 - Gutter Grønn
 
-JU19-gruppa er for spillere født etter 2006. Pr i dag består denne gruppa av 15 utøvere. Jentene vil i år spille i nivå 2 i seriespillet. **Laget ønsker seg flere utøvere!** Ta kontakt for prøvespill :slightly_smiling_face:
-
-Antall treninger i uka: 2 - [Se treningstider](/informasjon/treningstider/#j19)  
-Seriespill: Ungdomsserien Nivå 2.  
-Kontaktperson: Nina Kristiansen  
-Epost: nina.nilsen@gmail.com  
-Telefon: 918 41 338  
-
-## U17 - Gutter
-
-GU17-gruppa er for spillere født etter 2008. Pr i dag består denne gruppa av 10 utøvere. Guttene vil i år spille i nivå 1 i seriespillet.  
-**Laget ønsker seg flere utøvere!**  
-Ta kontakt med Ole for prøvespill :thumbsup:
+GU19-grønn gruppa er for spillere født 2009. Pr i dag består denne gruppa av 10-15 utøvere.
 
 Antall treninger i uka: 3 - [Se treningstider](/informasjon/treningstider/#g17)  
 Seriespill: Ungdomsserien Nivå 1.  
-Kontaktperson: Ole Eide 
-Epost: oleceide@gmail.com  
-Telefon: 918 26 570
+Kontaktperson: (kommer snart)   
+Epost:      
+Telefon: 
+
+## U19 - Jenter
+
+JU19-gruppa er for spillere født etter 2007. Pr i dag består denne gruppa av 10-12 utøvere. **Laget ønsker seg flere utøvere!** Ta kontakt for prøvespill :slightly_smiling_face:
+
+Antall treninger i uka: 2 - [Se treningstider](/informasjon/treningstider/#j19)  
+Seriespill: Ungdomsserien.  
+Kontaktperson: Nina Kristiansen  
+Epost: nina.nilsen@gmail.com  
+Telefon: 918 41 338  
 
 ## U17 - Jenter
 
@@ -82,19 +81,19 @@ Epost: janam1011@outlook.com
 ## U15 - Gutter
 
 GU15 er en nyoppstartet gruppe for gutter som er født etter 2010. 
-Pr i dag består denne gruppa av 4 utøvere. 
+Pr i dag består denne gruppa av 5 utøvere. 
 **Laget ønsker seg flere utøvere!**  
 Neste sesong vil guttene spille [teen-volley](https://volleyball.no/teenvolley/) eller i U15 serien.
 
-Antall treninger i uka: 1 - [Se treningstider](/informasjon/treningstider/#j15)  
+Antall treninger i uka: 2 - [Se treningstider](/informasjon/treningstider/#j15)  
 Seriespill: Teen Volley eller U15 serien  
-Kontaktperson: Nina Kristiansen
+Kontaktperson: Nina Kristiansen   
 Epost: nina.nilsen@gmail.com  
 Telefon: 918 41 338  
 
 ## U13 - Gutter
 
-GU13 laget er helt nyoppstartet før 25/26 sesongen. Dette er for gutter som er født etter 2012. Pr i dag består denne gruppa av 8 utøvere. 
+GU13 gruppen er for gutter som er født etter 2012. Pr i dag består denne gruppa av 8 utøvere. 
 **Laget ønsker seg flere utøvere!** Ta kontakt for prøvespill :slightly_smiling_face:  
 Gutterne vil i år spille minivolleyballturneringer (3 mot 3). 
 
