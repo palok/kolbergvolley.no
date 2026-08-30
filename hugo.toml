@@ -43,6 +43,11 @@ unsafe = true
     name = "Kontakt"
     url = "/informasjon/kontakt/"
     weight = 40
+  [[menu.main]]
+    identifier = "verktoy"
+    name = "Verktøy"
+    url = "/verktoy/rotasjoner/"
+    weight = 50
 
 [params.ananke.social.follow]
 new_window_icon = true

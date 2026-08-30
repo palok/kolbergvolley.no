@@ -1,0 +1,19 @@
+{{ define "title" }}{{ .Title }} | {{ .Site.Title }}{{ end }}
+
+{{ define "header" }}
+<header>
+  <div class="{{ .Site.Params.background_color_class | compare.Default "bg-black" }}">
+    {{ partials.Include "site-navigation.html" . }}
+  </div>
+</header>
+{{ end }}
+
+{{ define "head" }}
+<style>
+{{ partial "verktoy/rotasjoner-style" . | safeCSS }}
+</style>
+{{ end }}
+
+{{ define "main" }}
+{{ partial "verktoy/rotasjoner-body" . }}
+{{ end }}

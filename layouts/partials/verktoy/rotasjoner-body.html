@@ -1,0 +1,723 @@
+<div class="rotasjoner-root">
+<h1 id="titleLbl">Volleyball Rotation Planner</h1>
+<div class="controls lang-row">
+  <div class="phase-toggle" id="langToggle">
+    <button class="active" data-lang="en" title="English">🇬🇧 EN</button>
+    <button data-lang="no" title="Norsk">🇳🇴 NO</button>
+  </div>
+</div>
+<div class="controls">
+  <div class="phase-toggle" id="phaseToggle">
+    <button class="active" data-phase="base">Base Positions</button>
+    <button data-phase="receive">Serve Receive</button>
+  </div>
+  <select id="systemSelect">
+    <option value="4-2">4-2 System</option>
+    <option value="6-2">6-2 System</option>
+    <option value="5-1">5-1 System</option>
+  </select>
+</div>
+<div class="controls">
+  <span id="rotationLbl" style="font-size:.85rem;color:#6b7280">Rotation:</span>
+  <div id="rotationBtns" style="display:flex;gap:4px"></div>
+</div>
+<div class="checkbox-row">
+  <label for="swapLibero"><input type="checkbox" id="swapLibero"> <span id="swapLibTxt">Swap libero for MB</span></label>
+</div>
+<div class="court-wrapper">
+  <svg id="court" viewBox="0 0 620 700" width="620" height="700"></svg>
+</div>
+<div class="info-bar" id="infoBar"></div>
+<div class="legend" id="legend"></div>
+<div class="button-row">
+  <button class="reset" id="resetBtn"></button>
+  <button id="saveBtn"></button>
+</div>
+<div class="config-out" id="configPanel">
+  <div class="config-out-head">
+    <span class="config-out-label" id="configLabel"></span>
+    <button id="copyBtn"></button>
+  </div>
+  <textarea id="configOut" readonly rows="2" spellcheck="false"></textarea>
+</div>
+<div class="toast" id="toast"></div>
+
+<script>
+const COURT_W = 480, COURT_H = 440;
+const NET_Y = 190, FLOOR_Y = NET_Y, BOTTOM = FLOOR_Y + COURT_H;
+const LEFT = 80, RIGHT = LEFT + COURT_W - 40, CW = RIGHT - LEFT;
+const FRONT_Y = FLOOR_Y + COURT_H * 0.23;
+const BACK_Y = FLOOR_Y + COURT_H * 0.68;
+const POS = {
+  4: {x: LEFT + CW * 0.17, y: FRONT_Y},
+  3: {x: LEFT + CW * 0.5,  y: FRONT_Y},
+  2: {x: LEFT + CW * 0.83, y: FRONT_Y},
+  5: {x: LEFT + CW * 0.17, y: BACK_Y},
+  6: {x: LEFT + CW * 0.5,  y: BACK_Y},
+  1: {x: LEFT + CW * 0.83, y: BACK_Y}
+};
+const LIB_OUTSIDE = {x: RIGHT + 60, y: BACK_Y};
+const COLORS = {S:'#e94560',MB:'#2980b9',OH:'#27ae60',RH:'#f39c12',L:'#8e44ad'};
+const NAMES = {S:'Setter',MB:'Middle Blocker',OH:'Outside Hitter',RH:'Right Side Hitter',L:'Libero'};
+const I18N = {
+  en: {
+    names: NAMES,
+    short: {S:'S',MB:'MB',OH:'OH',RH:'RH',L:'L'},
+    title:'Volleyball Rotation Planner',
+    rotation:'Rotation:',
+    baseBtn:'Rotational position',
+    recvBtn:'Serve Receive',
+    phaseBase:'Base',
+    phaseReceive:'Serve Receive',
+    swapLib:'Swap libero for MB',
+    bench:'Bench',
+    subIn:'sub in',
+    reset:'Reset All',
+    save:'Save',
+    copy:'Copy',
+    setterFront:(id)=>`${id} sets from front row`,
+    setterBack:'S1 in back row',
+    liberoIn:(id)=>`Libero in for ${id}`,
+    configLabel:(sys,rot)=>`<b>${sys}</b> rotation <b>${rot}</b> serve receive — paste this line into the <code>receive</code> block:`,
+    toasts:{saved:'Saved to local storage',reset:'All positions reset',copied:'Config copied',copyManual:'Select and copy manually'}
+  },
+  no: {
+    names: {S:'Opplegger',MB:'Midt',OH:'Kant',RH:'Diagonal',L:'Libero'},
+    short: {S:'O',MB:'M',OH:'K',RH:'D',L:'L'},
+    title:'Volleyball Rotasjonsplanlegger',
+    rotation:'Rotasjon:',
+    baseBtn:'Rotasjonsposisjon',
+    recvBtn:'Servemottak',
+    phaseBase:'Grunnstilling',
+    phaseReceive:'Servemottak',
+    swapLib:'Bytt libero med midt',
+    bench:'Benk',
+    subIn:'innbytte',
+    reset:'Tilbakestill alt',
+    save:'Lagre',
+    copy:'Kopier',
+    setterFront:(id)=>`${id} setter fra frontrekken`,
+    setterBack:'O1 i bakerste rekke',
+    liberoIn:(id)=>`Libero inn for ${id}`,
+    configLabel:(sys,rot)=>`<b>${sys}</b> rotasjon <b>${rot}</b> mottak — lim denne linjen inn i <code>receive</code>-blokken:`,
+    toasts:{saved:'Lagret i lokal lagring',reset:'Alle posisjoner tilbakestilt',copied:'Konfigurasjon kopiert',copyManual:'Marker og kopier manuelt'}
+  }
+};
+const T = (key,...args)=>I18N[lang][key](...args);
+const SS = (key)=>I18N[lang][key];
+let lang = 'no';
+function lbl(id) { return id.replace(/^[A-Z]+/, m => I18N[lang].short[m] || m); }
+const NS = 'http://www.w3.org/2000/svg';
+const svg = document.getElementById('court');
+
+const FORMATIONS = {
+  '4-2': {
+    players: [{id:'S1',role:'S'},{id:'MB1',role:'MB'},{id:'OH1',role:'OH'},{id:'S2',role:'S'},{id:'MB2',role:'MB'},{id:'OH2',role:'OH'}],
+    base: {
+      1:{S1:1,MB1:2,OH1:3,S2:4,MB2:5,OH2:6},
+      2:{S1:6,MB1:1,OH1:2,S2:3,MB2:4,OH2:5},
+      3:{S1:5,MB1:6,OH1:1,S2:2,MB2:3,OH2:4},
+      4:{S1:4,MB1:5,OH1:6,S2:1,MB2:2,OH2:3},
+      5:{S1:3,MB1:4,OH1:5,S2:6,MB2:1,OH2:2},
+      6:{S1:2,MB1:3,OH1:4,S2:5,MB2:6,OH2:1}
+    },
+    receive: {
+      1:{S1:{x:420,y:500}, MB1:{x:347,y:276}, OH1:{x:300,y:340}, S2:{x:261,y:254}, MB2:{x:175,y:500}, OH2:{x:290,y:498}},
+      2:{S1:{x:290,y:500}, MB1:{x:435,y:500}, OH1:{x:214,y:302}, S2:{x:178,y:226}, MB2:{x:146,y:270}, OH2:{x:170,y:500}},
+      3:{S1:{x:170,y:500}, MB1:{x:285,y:500}, OH1:{x:435,y:498}, S2:{x:445,y:268}, MB2:{x:315,y:296}, OH2:{x:138,y:313}},
+      4:{S1:{x:249,y:235}, MB1:{x:175,y:500}, OH1:{x:290,y:498}, S2:{x:420,y:500}, MB2:{x:334,y:271}, OH2:{x:294,y:328}},
+      5:{S1:{x:193,y:225}, MB1:{x:132,y:258}, OH1:{x:170,y:500}, S2:{x:290,y:500}, MB2:{x:435,y:500}, OH2:{x:213,y:317}},
+      6:{S1:{x:445,y:268}, MB1:{x:323,y:296}, OH1:{x:133,y:320}, S2:{x:170,y:500}, MB2:{x:285,y:500}, OH2:{x:435,y:498}},
+    }
+  },
+  '6-2': {
+    players: [{id:'S1',role:'S'},{id:'MB1',role:'MB'},{id:'OH1',role:'OH'},{id:'S2',role:'S'},{id:'MB2',role:'MB'},{id:'OH2',role:'OH'}],
+    base: {
+      1:{S1:1,MB1:2,OH1:3,S2:4,MB2:5,OH2:6},
+      2:{S1:6,MB1:1,OH1:2,S2:3,MB2:4,OH2:5},
+      3:{S1:5,MB1:6,OH1:1,S2:2,MB2:3,OH2:4},
+      4:{S1:4,MB1:5,OH1:6,S2:1,MB2:2,OH2:3},
+      5:{S1:3,MB1:4,OH1:5,S2:6,MB2:1,OH2:2},
+      6:{S1:2,MB1:3,OH1:4,S2:5,MB2:6,OH2:1}
+    },
+    receive: {
+      1:{S1:{x:480,y:520},MB1:{x:445,y:275},OH1:{x:360,y:490},S2:{x:170,y:272},MB2:{x:175,y:500},OH2:{x:285,y:495}},
+      2:{S1:{x:300,y:340},MB1:{x:460,y:500},OH1:{x:400,y:485},S2:{x:300,y:272},MB2:{x:170,y:272},OH2:{x:170,y:500}},
+      3:{S1:{x:160,y:515},MB1:{x:300,y:500},OH1:{x:445,y:495},S2:{x:445,y:272},MB2:{x:300,y:272},OH2:{x:210,y:355}},
+      4:{S1:{x:170,y:272},MB1:{x:175,y:500},OH1:{x:290,y:498},S2:{x:480,y:520},MB2:{x:445,y:275},OH2:{x:360,y:485}},
+      5:{S1:{x:300,y:272},MB1:{x:160,y:275},OH1:{x:175,y:500},S2:{x:300,y:340},MB2:{x:460,y:500},OH2:{x:400,y:485}},
+      6:{S1:{x:445,y:272},MB1:{x:300,y:275},OH1:{x:210,y:355},S2:{x:160,y:515},MB2:{x:285,y:500},OH2:{x:440,y:495}}
+    }
+  },
+  '5-1': {
+    players: [{id:'S1',role:'S'},{id:'MB1',role:'MB'},{id:'OH1',role:'OH'},{id:'RH1',role:'RH'},{id:'MB2',role:'MB'},{id:'OH2',role:'OH'}],
+    base: {
+      1:{S1:1,MB1:2,OH1:3,RH1:4,MB2:5,OH2:6},
+      2:{S1:6,MB1:1,OH1:2,RH1:3,MB2:4,OH2:5},
+      3:{S1:5,MB1:6,OH1:1,RH1:2,MB2:3,OH2:4},
+      4:{S1:4,MB1:5,OH1:6,RH1:1,MB2:2,OH2:3},
+      5:{S1:3,MB1:4,OH1:5,RH1:6,MB2:1,OH2:2},
+      6:{S1:2,MB1:3,OH1:4,RH1:5,MB2:6,OH2:1}
+    },
+    receive: {
+      1:{S1:{x:480,y:520},MB1:{x:445,y:275},OH1:{x:360,y:490},RH1:{x:155,y:272},MB2:{x:175,y:500},OH2:{x:285,y:495}},
+      2:{S1:{x:300,y:340},MB1:{x:460,y:500},OH1:{x:400,y:485},RH1:{x:300,y:272},MB2:{x:170,y:272},OH2:{x:170,y:500}},
+      3:{S1:{x:160,y:515},MB1:{x:300,y:500},OH1:{x:445,y:495},RH1:{x:445,y:272},MB2:{x:300,y:272},OH2:{x:210,y:355}},
+      4:{S1:{x:180,y:272},MB1:{x:175,y:500},OH1:{x:290,y:495},RH1:{x:485,y:340},MB2:{x:445,y:272},OH2:{x:360,y:485}},
+      5:{S1:{x:310,y:272},MB1:{x:160,y:272},OH1:{x:175,y:500},RH1:{x:300,y:490},MB2:{x:460,y:500},OH2:{x:400,y:485}},
+      6:{S1:{x:445,y:268},MB1:{x:300,y:272},OH1:{x:200,y:485},RH1:{x:170,y:505},MB2:{x:285,y:500},OH2:{x:440,y:495}}
+    }
+  }
+};
+
+let state = {system:'4-2', rotation:1, phase:'base', swapLibero:false, overrides:{}};
+let playerEls = {};
+let liberoEl = null;
+let dragging = null, dragOff = {x:60,y:160};
+let animTimers = [];
+
+function save() { try { localStorage.setItem('vb-rot', JSON.stringify(state.overrides)); } catch(e){} }
+function load() { try { const d=localStorage.getItem('vb-rot'); if(d) state.overrides=JSON.parse(d); } catch(e){} }
+function saveLang() { try { localStorage.setItem('vb-lang', lang); } catch(e){} }
+function loadLang() { try { const d=localStorage.getItem('vb-lang'); if(d==='no'||d==='en') lang=d; } catch(e){} }
+function oKey(s,r,p,id) { return `${s}|${r}|${p}|${id}`; }
+function toast(m) { const t=document.getElementById('toast'); t.textContent=m; t.classList.add('show'); setTimeout(()=>t.classList.remove('show'),1500); }
+
+function applyLang() {
+  const set=(id,val)=>{ const e=document.getElementById(id); if(e) e.textContent=val; };
+  set('titleLbl', SS('title'));
+  set('rotationLbl', SS('rotation'));
+  set('swapLibTxt', SS('swapLib'));
+  set('resetBtn', SS('reset'));
+  set('saveBtn', SS('save'));
+  set('copyBtn', SS('copy'));
+  document.querySelectorAll('#phaseToggle button').forEach(b=>{
+    b.textContent = b.dataset.phase==='base' ? SS('baseBtn') : SS('recvBtn');
+  });
+  document.querySelectorAll('#langToggle button').forEach(b=>{
+    b.classList.toggle('active', b.dataset.lang===lang);
+  });
+  const benchT = document.getElementById('benchLbl'); if(benchT) benchT.textContent=SS('bench');
+  const subT = document.getElementById('subInLbl'); if(subT) subT.textContent=SS('subIn');
+  const libTag = document.getElementById('libNameTag'); if(libTag) libTag.textContent=SS('names').L;
+  updateAllPositions(false);
+  updateLegend();
+  updateInfoBar();
+  updateConfigOut();
+}
+
+function updateConfigOut() {
+  const ta = document.getElementById('configOut');
+  const lbl = document.getElementById('configLabel');
+  const panel = document.getElementById('configPanel');
+  if(!ta || !lbl || !panel) return;
+  if(state.phase !== 'receive') { panel.classList.remove('show'); return; }
+  const f = FORMATIONS[state.system];
+  const pos = getPositions();
+  const parts = f.players.map(p => {
+    const r = pos[p.id];
+    return `${p.id}:{x:${Math.round(r.x)},y:${Math.round(r.y)}}`;
+  });
+  ta.value = `${state.rotation}:{${parts.join(', ')}},`;
+  lbl.innerHTML = T('configLabel', state.system, state.rotation);
+  panel.classList.add('show');
+}
+
+function buildCourt() {
+  svg.innerHTML = '';
+  const defs = document.createElementNS(NS,'defs');
+
+  const glow = document.createElementNS(NS,'filter');
+  glow.id='glow'; glow.innerHTML='<feGaussianBlur stdDeviation="1.5" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>';
+  defs.appendChild(glow);
+
+  const libGrad = document.createElementNS(NS,'radialGradient');
+  libGrad.id='libGrad'; libGrad.innerHTML='<stop offset="0%" stop-color="rgba(142,68,173,0.25)"/><stop offset="100%" stop-color="rgba(142,68,173,0)"/>';
+  defs.appendChild(libGrad);
+
+  svg.appendChild(defs);
+
+  const atkY = FLOOR_Y + COURT_H * 0.35;
+  const oppTop = 45;
+
+  // Blue background (surrounding area) — its top edge is where the opponent court starts
+  const bg = document.createElementNS(NS,'rect');
+  Object.entries({x:LEFT-40,y:oppTop,width:CW+80,height:(FLOOR_Y+COURT_H+40)-oppTop,rx:8,fill:'#085DA0'}).forEach(([k,v])=>bg.setAttribute(k,v));
+  svg.appendChild(bg);
+
+  // Opponent side (over the net): orange court from the top of the blue box down to the net
+  const oppRect = document.createElementNS(NS,'rect');
+  Object.entries({x:LEFT,y:oppTop,width:CW,height:FLOOR_Y-oppTop,fill:'#F3680B'}).forEach(([k,v])=>oppRect.setAttribute(k,v));
+  svg.appendChild(oppRect);
+  for(const x of [LEFT, RIGHT]){
+    const side=document.createElementNS(NS,'line');
+    Object.entries({x1:x,y1:oppTop,x2:x,y2:FLOOR_Y,'stroke':'#FFFEFA','stroke-width':2.5}).forEach(([k,v])=>side.setAttribute(k,v));
+    svg.appendChild(side);
+  }
+
+  // Inside 3m: dark orange
+  const frontZone = document.createElementNS(NS,'rect');
+  Object.entries({x:LEFT,y:FLOOR_Y,width:CW,height:atkY-FLOOR_Y,fill:'#F3680B'}).forEach(([k,v])=>frontZone.setAttribute(k,v));
+  svg.appendChild(frontZone);
+
+  // Back court: light orange
+  const backZone = document.createElementNS(NS,'rect');
+  Object.entries({x:LEFT,y:atkY,width:CW,height:FLOOR_Y+COURT_H-atkY,fill:'#F97F2C'}).forEach(([k,v])=>backZone.setAttribute(k,v));
+  svg.appendChild(backZone);
+
+  // Court boundary
+  const border = document.createElementNS(NS,'rect');
+  Object.entries({x:LEFT,y:FLOOR_Y,width:CW,height:COURT_H,fill:'none',stroke:'#FFFEFA','stroke-width':3}).forEach(([k,v])=>border.setAttribute(k,v));
+  svg.appendChild(border);
+
+  // Net
+  const netG = document.createElementNS(NS,'g');
+  const netBg = document.createElementNS(NS,'rect');
+  Object.entries({x:LEFT-5,y:NET_Y-5,width:CW+10,height:10,fill:'#3a3a3a',rx:2}).forEach(([k,v])=>netBg.setAttribute(k,v));
+  netG.appendChild(netBg);
+  for(let x=LEFT;x<=RIGHT;x+=12){const l=document.createElementNS(NS,'line');l.setAttribute('x1',x);l.setAttribute('y1',NET_Y-4);l.setAttribute('x2',x);l.setAttribute('y2',NET_Y+4);l.setAttribute('stroke','#9a9a9a');l.setAttribute('stroke-width',1.3);netG.appendChild(l);}
+  const netText = document.createElementNS(NS,'text');
+  Object.entries({x:(LEFT+RIGHT)/2,y:NET_Y-9,'text-anchor':'middle',fill:'#e8e8e8','font-size':'10','font-weight':'bold'}).forEach(([k,v])=>netText.setAttribute(k,v));
+  netText.textContent='NET';
+  netG.appendChild(netText);
+  svg.appendChild(netG);
+
+  // Attack line (solid, thicker)
+  const atk = document.createElementNS(NS,'line');
+  Object.entries({x1:LEFT,y1:atkY,x2:RIGHT,y2:atkY,stroke:'#FFFEFA','stroke-width':2.5}).forEach(([k,v])=>atk.setAttribute(k,v));
+  svg.appendChild(atk);
+
+  // Libero bench zone (right side, outside court)
+  const benchG = document.createElementNS(NS,'g');
+  benchG.id = 'benchZone';
+
+  const benchBg = document.createElementNS(NS,'rect');
+  Object.entries({x:RIGHT+15,y:BACK_Y-45,width:55,height:90,rx:8,fill:'rgba(142,68,173,0.08)',stroke:'rgba(142,68,173,0.25)','stroke-width':1,'stroke-dasharray':'5 3'}).forEach(([k,v])=>benchBg.setAttribute(k,v));
+  benchG.appendChild(benchBg);
+
+  const benchLbl = document.createElementNS(NS,'text');
+  benchLbl.id='benchLbl';
+  Object.entries({x:RIGHT+42,y:BACK_Y-52,'text-anchor':'middle',fill:'rgba(142,68,173,0.5)','font-size':'8','font-weight':'bold'}).forEach(([k,v])=>benchLbl.setAttribute(k,v));
+  benchLbl.textContent='Bench';
+  benchG.appendChild(benchLbl);
+
+  const benchArrow = document.createElementNS(NS,'text');
+  Object.entries({x:RIGHT+42,y:BACK_Y+58,'text-anchor':'middle',fill:'rgba(142,68,173,0.4)','font-size':'16'}).forEach(([k,v])=>benchArrow.setAttribute(k,v));
+  benchArrow.textContent='→';
+  benchG.appendChild(benchArrow);
+
+  const benchArrowLbl = document.createElementNS(NS,'text');
+  benchArrowLbl.id='subInLbl';
+  Object.entries({x:RIGHT+42,y:BACK_Y+72,'text-anchor':'middle',fill:'rgba(142,68,173,0.4)','font-size':'7'}).forEach(([k,v])=>benchArrowLbl.setAttribute(k,v));
+  benchArrowLbl.textContent='sub in';
+  benchG.appendChild(benchArrowLbl);
+
+  benchG.style.opacity = '0.4';
+  benchG.style.transition = 'opacity 0.4s ease';
+  svg.appendChild(benchG);
+
+  // Position labels
+  const darkFront = '#A84A07', darkBack = '#C25A0C';
+  for(const [n,p] of Object.entries(POS)){
+    const t=document.createElementNS(NS,'text');
+    const isFront = ['2','3','4'].includes(n);
+    Object.entries({x:p.x,y:(isFront?p.y+15:p.y+70),'text-anchor':'middle',fill:isFront?darkFront:darkBack,'font-size':'110','font-weight':'bold','opacity':'0.3'}).forEach(([k,v])=>t.setAttribute(k,v));
+    t.textContent=n;
+    svg.appendChild(t);
+  }
+}
+
+function getPositionsFor(sys, rot, phase) {
+  const f = FORMATIONS[sys];
+  const src = phase==='base' ? f.base[rot] : f.receive[rot];
+  const pos = {};
+  for(const p of f.players) {
+    const k = oKey(sys,rot,phase,p.id);
+    if(state.overrides[k]) { pos[p.id]={...state.overrides[k]}; }
+    else {
+      const v = src[p.id];
+      pos[p.id] = typeof v==='number' ? {...POS[v]} : {...v};
+    }
+  }
+  return pos;
+}
+
+function applyPositions(pos, animate) {
+  const f = FORMATIONS[state.system];
+  const bench = document.getElementById('benchZone');
+  if(bench) bench.style.opacity = state.swapLibero ? '1' : '0.4';
+
+  for(const p of f.players) {
+    const pp = pos[p.id];
+    if(!pp) continue;
+    if(state.swapLibero && p.id === liberoTargetId()) {
+      updatePlayerEl(p, LIB_OUTSIDE.x, LIB_OUTSIDE.y, animate);
+      playerEls[p.id].style.opacity = '0';
+      playerEls[p.id].style.pointerEvents = 'none';
+    } else {
+      updatePlayerEl(p, pp.x, pp.y, animate);
+      playerEls[p.id].style.opacity = '1';
+      playerEls[p.id].style.pointerEvents = '';
+    }
+  }
+  if(liberoEl) {
+    if(state.swapLibero) {
+      const targetId = liberoTargetId();
+      const mbPos = pos[targetId];
+      const libSpot = mbPos || {x: LIB_OUTSIDE.x, y: LIB_OUTSIDE.y};
+      liberoEl.setAttribute('transform', `translate(${libSpot.x},${libSpot.y})`);
+      liberoEl.style.opacity = '1';
+      liberoEl.style.pointerEvents = '';
+    } else {
+      liberoEl.setAttribute('transform', `translate(${LIB_OUTSIDE.x},${LIB_OUTSIDE.y})`);
+      liberoEl.style.opacity = '0';
+      liberoEl.style.pointerEvents = 'none';
+    }
+  }
+}
+
+function cancelAnims() {
+  animTimers.forEach(t => clearTimeout(t));
+  animTimers = [];
+}
+
+function getPositions() {
+  return getPositionsFor(state.system, state.rotation, state.phase);
+}
+
+function getBasePosNum(playerId) {
+  const f = FORMATIONS[state.system];
+  const v = f.base[state.rotation][playerId];
+  return typeof v==='number' ? v : null;
+}
+
+function isFrontRow(id) { const p=getBasePosNum(id); return p!==null && [2,3,4].includes(p); }
+function isBackRow(id) { const p=getBasePosNum(id); return p!==null && [5,6,1].includes(p); }
+function liberoTargetId() {
+  const f = FORMATIONS[state.system];
+  const t = f.players.find(p => p.role==='MB' && isBackRow(p.id));
+  return t ? t.id : null;
+}
+
+function createPlayerEl(player) {
+  const g = document.createElementNS(NS,'g');
+  g.classList.add('player-group');
+  g.dataset.id = player.id;
+
+  const shadow = document.createElementNS(NS,'circle');
+  Object.entries({r:22,fill:'rgba(0,0,0,0.35)',cy:2}).forEach(([k,v])=>shadow.setAttribute(k,v));
+  g.appendChild(shadow);
+
+  const circ = document.createElementNS(NS,'circle');
+  Object.entries({r:22,fill:COLORS[player.role],stroke:'rgba(255,255,255,0.5)','stroke-width':1.5}).forEach(([k,v])=>circ.setAttribute(k,v));
+  circ.classList.add('main-circle');
+  g.appendChild(circ);
+
+  const ring = document.createElementNS(NS,'circle');
+  Object.entries({r:25,fill:'none',stroke:'rgba(255,255,255,0.15)','stroke-width':1}).forEach(([k,v])=>ring.setAttribute(k,v));
+  ring.classList.add('front-ring');
+  ring.style.display='none';
+  g.appendChild(ring);
+
+  const label = document.createElementNS(NS,'text');
+  Object.entries({'text-anchor':'middle','dominant-baseline':'central',fill:'#fff','font-size':'11','font-weight':'bold','pointer-events':'none','font-family':'-apple-system,sans-serif'}).forEach(([k,v])=>label.setAttribute(k,v));
+  label.classList.add('label-text');
+  g.appendChild(label);
+
+  const subLabel = document.createElementNS(NS,'text');
+  Object.entries({'text-anchor':'middle',fill:COLORS.L,'font-size':'8','pointer-events':'none',y:-32}).forEach(([k,v])=>subLabel.setAttribute(k,v));
+  subLabel.classList.add('sub-label');
+  subLabel.textContent=SS('names').L;
+  subLabel.style.display='none';
+  g.appendChild(subLabel);
+
+  g.addEventListener('pointerdown', onDown);
+  svg.appendChild(g);
+  return g;
+}
+
+function createLiberoEl() {
+  const g = document.createElementNS(NS,'g');
+  g.classList.add('player-group');
+  g.id = 'liberoPlayer';
+  g.dataset.id = 'LIBERO';
+
+  const shadow = document.createElementNS(NS,'circle');
+  Object.entries({r:22,fill:'rgba(0,0,0,0.35)',cy:2}).forEach(([k,v])=>shadow.setAttribute(k,v));
+  g.appendChild(shadow);
+
+  const circ = document.createElementNS(NS,'circle');
+  Object.entries({r:22,fill:COLORS.L,stroke:'rgba(255,255,255,0.5)','stroke-width':1.5}).forEach(([k,v])=>circ.setAttribute(k,v));
+  circ.classList.add('main-circle');
+  g.appendChild(circ);
+
+  const label = document.createElementNS(NS,'text');
+  Object.entries({'text-anchor':'middle','dominant-baseline':'central',fill:'#fff','font-size':'13','font-weight':'bold','pointer-events':'none','font-family':'-apple-system,sans-serif'}).forEach(([k,v])=>label.setAttribute(k,v));
+  label.textContent='L';
+  g.appendChild(label);
+
+  const nameTag = document.createElementNS(NS,'text');
+  Object.entries({'text-anchor':'middle',fill:COLORS.L,'font-size':'8','pointer-events':'none',y:-32}).forEach(([k,v])=>nameTag.setAttribute(k,v));
+  nameTag.classList.add('name-tag');
+  nameTag.id='libNameTag';
+  nameTag.textContent=SS('names').L;
+  g.appendChild(nameTag);
+
+  // Start off-screen
+  g.setAttribute('transform', `translate(${LIB_OUTSIDE.x},${LIB_OUTSIDE.y})`);
+  g.style.opacity = '0';
+  svg.appendChild(g);
+  return g;
+}
+
+function updatePlayerEl(player, x, y, animate) {
+  const g = playerEls[player.id];
+  if(!g) return;
+  const fr = isFrontRow(player.id);
+
+  if(!animate) g.classList.add('dragging');
+  else g.classList.remove('dragging');
+
+  g.setAttribute('transform', `translate(${x},${y})`);
+
+  g.querySelector('.main-circle').setAttribute('fill', COLORS[player.role]);
+  g.querySelector('.main-circle').setAttribute('stroke', fr ? '#fff' : 'rgba(255,255,255,0.4)');
+  g.querySelector('.main-circle').setAttribute('stroke-width', fr ? 2.5 : 1.5);
+
+  g.querySelector('.front-ring').style.display = fr ? '' : 'none';
+  g.querySelector('.label-text').textContent = lbl(player.id);
+
+  if(dragging && dragging.id===player.id) g.classList.add('dragging');
+}
+
+function updateAllPositions(animate=true) {
+  const pos = getPositions();
+  applyPositions(pos, animate);
+}
+
+function rebuildPlayers() {
+  Object.values(playerEls).forEach(el=>el.remove());
+  playerEls = {};
+  if(liberoEl) { liberoEl.remove(); liberoEl = null; }
+
+  const f = FORMATIONS[state.system];
+  for(const p of f.players) {
+    playerEls[p.id] = createPlayerEl(p);
+  }
+  liberoEl = createLiberoEl();
+
+  // Place elements instantly at base positions of current rotation (no animation)
+  const basePos = getPositionsFor(state.system, state.rotation, 'base');
+  const lTarget = liberoTargetId();
+  for(const p of f.players) {
+    updatePlayerEl(p, basePos[p.id].x, basePos[p.id].y, false);
+    playerEls[p.id].classList.remove('dragging');
+    playerEls[p.id].style.cursor = 'grab';
+    playerEls[p.id].style.opacity = (state.swapLibero && p.id===lTarget) ? '0' : '1';
+    playerEls[p.id].style.pointerEvents = (state.swapLibero && p.id===lTarget) ? 'none' : '';
+  }
+}
+
+function onDown(e) {
+  e.preventDefault();
+  const g = e.currentTarget;
+  const id = g.dataset.id;
+  if(id === 'LIBERO') return; // Can't drag the libero
+  cancelAnims(); // Stop any pending sequenced animation
+  const pt = svgPt(e);
+  const pos = getPositions()[id];
+
+  dragging = {id};
+  dragOff = {x: pt.x - pos.x, y: pt.y - pos.y};
+  g.classList.add('dragging');
+
+  document.addEventListener('pointermove', onMove);
+  document.addEventListener('pointerup', onUp);
+}
+
+function onMove(e) {
+  if(!dragging) return;
+  e.preventDefault();
+  const pt = svgPt(e);
+  const x = Math.max(LEFT+10, Math.min(RIGHT-10, pt.x - dragOff.x));
+  const y = Math.max(FLOOR_Y+20, Math.min(BOTTOM-5, pt.y - dragOff.y));
+  const g = playerEls[dragging.id];
+  g.setAttribute('transform', `translate(${x},${y})`);
+}
+
+function onUp(e) {
+  if(!dragging) return;
+  const pt = svgPt(e);
+  const x = Math.max(LEFT+10, Math.min(RIGHT-10, pt.x - dragOff.x));
+  const y = Math.max(FLOOR_Y+20, Math.min(BOTTOM-5, pt.y - dragOff.y));
+
+  const k = oKey(state.system, state.rotation, state.phase, dragging.id);
+  state.overrides[k] = {x, y};
+
+  const g = playerEls[dragging.id];
+  g.classList.remove('dragging');
+  dragging = null;
+
+  updateConfigOut();
+
+  document.removeEventListener('pointermove', onMove);
+  document.removeEventListener('pointerup', onUp);
+}
+
+function svgPt(e) {
+  const pt = svg.createSVGPoint();
+  const src = e.touches ? e.touches[0] : e;
+  pt.x = src.clientX; pt.y = src.clientY;
+  return pt.matrixTransform(svg.getScreenCTM().inverse());
+}
+
+function setupRotationBtns() {
+  const c = document.getElementById('rotationBtns');
+  c.innerHTML = '';
+  for(let i=1;i<=6;i++){
+    const b=document.createElement('button');
+    b.textContent=i;
+    if(i===state.rotation) b.classList.add('active');
+    b.addEventListener('click',()=>{
+      if(state.rotation === i) return;
+      const fromReceive = state.phase === 'receive';
+      const oldRot = state.rotation;
+      state.rotation = i;
+      cancelAnims();
+      if(fromReceive) {
+        // Step 1: return to base positions of the current rotation and
+        // highlight the "Base Positions" button
+        state.phase = 'base';
+        updateButtons();
+        const oldBasePos = getPositionsFor(state.system, oldRot, 'base');
+        applyPositions(oldBasePos, true);
+        // Step 2: after returning to base, animate the actual rotation
+        const t = setTimeout(() => {
+          const newBasePos = getPositionsFor(state.system, state.rotation, 'base');
+          applyPositions(newBasePos, true);
+          updateInfoBar();
+        }, 520);
+        animTimers.push(t);
+      } else {
+        updateButtons();
+        const basePos = getPositionsFor(state.system, state.rotation, 'base');
+        applyPositions(basePos, true);
+      }
+      updateLegend();
+      updateInfoBar();
+    });
+    c.appendChild(b);
+  }
+}
+
+function setupControls() {
+  document.getElementById('systemSelect').addEventListener('change',e=>{
+    const sys = e.target.value;
+    if(sys === state.system) return;
+    state.system = sys;
+    state.rotation = 1;
+    state.phase = 'base'; // Switching systems returns to base mode
+    cancelAnims();
+    rebuildPlayers();
+    updateButtons();
+    updateLegend();
+    updateInfoBar();
+  });
+  document.querySelectorAll('#phaseToggle button').forEach(b=>b.addEventListener('click',()=>{
+    if(b.dataset.phase === state.phase) return;
+    state.phase = b.dataset.phase;
+    cancelAnims();
+    updateButtons();
+    updateAllPositions(true);
+    updateLegend();
+    updateInfoBar();
+  }));
+  document.getElementById('swapLibero').addEventListener('change',e=>{
+    state.swapLibero=e.target.checked;
+    cancelAnims();
+    updateAllPositions(true);
+    updateInfoBar();
+  });
+  document.getElementById('resetBtn').addEventListener('click',()=>{
+    state.overrides={};
+    save();
+    cancelAnims();
+    updateAllPositions(true);
+    updateLegend();
+    updateInfoBar();
+    toast(SS('toasts').reset);
+  });
+  document.getElementById('saveBtn').addEventListener('click',()=>{save();updateConfigOut();toast(SS('toasts').saved);});
+  document.getElementById('copyBtn').addEventListener('click',()=>{
+    const ta=document.getElementById('configOut');
+    ta.select(); ta.setSelectionRange(0, ta.value.length);
+    try {
+      if(navigator.clipboard && navigator.clipboard.writeText) { navigator.clipboard.writeText(ta.value); toast(SS('toasts').copied); return; }
+    } catch(e){}
+    try { document.execCommand('copy'); toast(SS('toasts').copied); } catch(e){ toast(SS('toasts').copyManual); }
+  });
+  document.querySelectorAll('#langToggle button').forEach(b=>b.addEventListener('click',()=>{
+    if(b.dataset.lang === lang) return;
+    lang = b.dataset.lang;
+    saveLang();
+    applyLang();
+  }));
+}
+
+function updateButtons() {
+  document.getElementById('systemSelect').value=state.system;
+  document.querySelectorAll('#phaseToggle button').forEach(b=>b.classList.toggle('active',b.dataset.phase===state.phase));
+  document.querySelectorAll('#rotationBtns button').forEach((b,i)=>b.classList.toggle('active',i+1===state.rotation));
+}
+
+function updateLegend() {
+  const c=document.getElementById('legend'); c.innerHTML='';
+  const f=FORMATIONS[state.system];
+  const roles=[...new Set(f.players.map(p=>p.role))];
+  if(!roles.includes('L')) roles.push('L');
+  for(const r of roles){
+    const item=document.createElement('div'); item.className='legend-item';
+    const dot=document.createElement('div'); dot.className='legend-dot'; dot.style.backgroundColor=COLORS[r];
+    const lbl=document.createElement('span'); lbl.textContent=`${I18N[lang].short[r]} = ${I18N[lang].names[r]}`;
+    item.appendChild(dot); item.appendChild(lbl); c.appendChild(item);
+  }
+}
+
+function updateInfoBar() {
+  const f=FORMATIONS[state.system];
+  const rot=f.base[state.rotation];
+  let info='';
+  if(state.system==='4-2'){
+    const sFront=f.players.filter(p=>{const v=rot[p.id];return typeof v==='number'&&[2,3,4].includes(v)&&p.role==='S';});
+    info=sFront.length?T('setterFront', lbl(sFront[0].id)):'';
+  } else if(state.system==='6-2'){
+    const sFront=f.players.filter(p=>{const v=rot[p.id];return typeof v==='number'&&[2,3,4].includes(v)&&p.role==='S';});
+    info=sFront.length?T('setterFront', lbl(sFront[0].id)):'';
+  } else {
+    const sPos=rot['S1'];
+    const inFront=typeof sPos==='number'&&[2,3,4].includes(sPos);
+    info=inFront?T('setterFront', lbl('S1')):SS('setterBack');
+  }
+  const libNote = state.swapLibero ? ' | ' + T('liberoIn', lbl(liberoTargetId())) : '';
+  const phaseName = state.phase==='base' ? SS('phaseBase') : SS('phaseReceive');
+  document.getElementById('infoBar').textContent=`${state.system} | ${SS('rotation').replace(':','')} ${state.rotation} | ${phaseName}${info?' | '+info:''}${libNote}`;
+  updateConfigOut();
+}
+
+function update() {
+  updateButtons();
+  updateAllPositions(true);
+  updateLegend();
+  updateInfoBar();
+}
+
+buildCourt();
+setupControls();
+setupRotationBtns();
+load();
+loadLang();
+rebuildPlayers();
+update();
+applyLang();
+</script>
+</div>

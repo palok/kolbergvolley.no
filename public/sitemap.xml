@@ -2,30 +2,34 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
-    <loc>http://localhost:1313/categories/</loc>
+    <loc>https://kolbergvolley.no/categories/</loc>
   </url><url>
-    <loc>http://localhost:1313/informasjon/hjemmebane/</loc>
+    <loc>https://kolbergvolley.no/informasjon/hjemmebane/</loc>
   </url><url>
-    <loc>http://localhost:1313/informasjon/hvordan-bli-medlem/</loc>
+    <loc>https://kolbergvolley.no/informasjon/hvordan-bli-medlem/</loc>
   </url><url>
-    <loc>http://localhost:1313/informasjon/</loc>
+    <loc>https://kolbergvolley.no/informasjon/</loc>
   </url><url>
-    <loc>http://localhost:1313/informasjon/kontakt/</loc>
+    <loc>https://kolbergvolley.no/informasjon/kontakt/</loc>
   </url><url>
-    <loc>http://localhost:1313/informasjon/lagene/</loc>
+    <loc>https://kolbergvolley.no/informasjon/lagene/</loc>
   </url><url>
-    <loc>http://localhost:1313/informasjon/nm-u19-volda-2026/</loc>
+    <loc>https://kolbergvolley.no/informasjon/nm-u19-volda-2026/</loc>
   </url><url>
-    <loc>http://localhost:1313/informasjon/grasrot/</loc>
+    <loc>https://kolbergvolley.no/verktoy/rotasjoner/</loc>
   </url><url>
-    <loc>http://localhost:1313/setter-camp/</loc>
+    <loc>https://kolbergvolley.no/informasjon/grasrot/</loc>
   </url><url>
-    <loc>http://localhost:1313/informasjon/styret/</loc>
+    <loc>https://kolbergvolley.no/setter-camp/</loc>
   </url><url>
-    <loc>http://localhost:1313/tags/</loc>
+    <loc>https://kolbergvolley.no/informasjon/styret/</loc>
   </url><url>
-    <loc>http://localhost:1313/informasjon/treningstider/</loc>
+    <loc>https://kolbergvolley.no/tags/</loc>
   </url><url>
-    <loc>http://localhost:1313/</loc>
+    <loc>https://kolbergvolley.no/informasjon/treningstider/</loc>
+  </url><url>
+    <loc>https://kolbergvolley.no/verktoy/</loc>
+  </url><url>
+    <loc>https://kolbergvolley.no/</loc>
   </url>
 </urlset>
