@@ -365,11 +365,11 @@ function applyPositions(pos, animate) {
       const targetId = liberoTargetId();
       const mbPos = pos[targetId];
       const libSpot = mbPos || {x: LIB_OUTSIDE.x, y: LIB_OUTSIDE.y};
-      liberoEl.setAttribute('transform', `translate(${libSpot.x},${libSpot.y})`);
+      liberoEl.style.transform = `translate(${libSpot.x}px,${libSpot.y}px)`;
       liberoEl.style.opacity = '1';
       liberoEl.style.pointerEvents = '';
     } else {
-      liberoEl.setAttribute('transform', `translate(${LIB_OUTSIDE.x},${LIB_OUTSIDE.y})`);
+      liberoEl.style.transform = `translate(${LIB_OUTSIDE.x}px,${LIB_OUTSIDE.y}px)`;
       liberoEl.style.opacity = '0';
       liberoEl.style.pointerEvents = 'none';
     }
@@ -464,7 +464,7 @@ function createLiberoEl() {
   g.appendChild(nameTag);
 
   // Start off-screen
-  g.setAttribute('transform', `translate(${LIB_OUTSIDE.x},${LIB_OUTSIDE.y})`);
+  g.style.transform = `translate(${LIB_OUTSIDE.x}px,${LIB_OUTSIDE.y}px)`;
   g.style.opacity = '0';
   svg.appendChild(g);
   return g;
@@ -478,7 +478,7 @@ function updatePlayerEl(player, x, y, animate) {
   if(!animate) g.classList.add('dragging');
   else g.classList.remove('dragging');
 
-  g.setAttribute('transform', `translate(${x},${y})`);
+  g.style.transform = `translate(${x}px,${y}px)`;
 
   g.querySelector('.main-circle').setAttribute('fill', COLORS[player.role]);
   g.querySelector('.main-circle').setAttribute('stroke', fr ? '#fff' : 'rgba(255,255,255,0.4)');
@@ -542,7 +542,7 @@ function onMove(e) {
   const x = Math.max(LEFT+10, Math.min(RIGHT-10, pt.x - dragOff.x));
   const y = Math.max(FLOOR_Y+20, Math.min(BOTTOM-5, pt.y - dragOff.y));
   const g = playerEls[dragging.id];
-  g.setAttribute('transform', `translate(${x},${y})`);
+  g.style.transform = `translate(${x}px,${y}px)`;
 }
 
 function onUp(e) {
