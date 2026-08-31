@@ -9,9 +9,9 @@ h1{font-size:1.4rem;margin:12px 0 4px;color:#1f2937;letter-spacing:1px}
 .phase-toggle button{padding:6px 14px;border:none;background:#f3f4f6;color:#4b5563;cursor:pointer;font-size:.85rem;transition:all .2s}
 .phase-toggle button:hover{background:#ecfdf5;color:#065f46}
 .phase-toggle button.active{background:#e94560;color:#fff}
-.court-wrapper{position:relative;margin:10px auto}
-#court{display:block;cursor:default}
-.info-bar{text-align:center;font-size:.8rem;color:#6b7280;margin:4px 0 10px}
+.court-wrapper{position:relative;margin:10px auto;max-width:620px;width:100%}
+#court{display:block;cursor:default;width:100%;height:auto}
+.info-bar{display:none;text-align:center;font-size:.8rem;color:#6b7280;margin:4px 0 10px}
 .button-row{display:flex;gap:8px;justify-content:center;margin:6px 0}
 .button-row button{padding:6px 18px;border:2px solid #e5e7eb;border-radius:6px;background:#f3f4f6;color:#4b5563;cursor:pointer;font-size:.85rem;transition:all .2s}
 .button-row button:hover{background:#ecfdf5;border-color:#34d399;color:#065f46}
@@ -34,5 +34,6 @@ h1{font-size:1.4rem;margin:12px 0 4px;color:#1f2937;letter-spacing:1px}
 #copyBtn:hover{background:#ecfdf5;border-color:#34d399;color:#065f46}
 #configOut{width:100%;min-height:48px;background:#f9fafb;color:#1f2937;border:1px solid #d1d5db;border-radius:6px;font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:.78rem;resize:vertical}
 #configOut:focus{outline:none;border-color:#e94560}
-.player-group{transition:transform 0.5s cubic-bezier(.4,0,.2,1),opacity 0.4s ease}
+.player-group{transition:transform 0.5s cubic-bezier(.4,0,.2,1),opacity 0.4s ease;touch-action:none;-webkit-user-select:none;user-select:none}
 .player-group.dragging{transition:none!important;cursor:grabbing!important}
+@media(max-width:480px){.rotasjoner-root{padding:8px}h1{font-size:1.15rem;margin:8px 0 4px}.controls{padding:6px 8px;gap:6px}.controls button,.phase-toggle button{padding:6px 10px;font-size:.8rem;min-height:36px}.controls select{padding:5px 6px;font-size:.8rem;min-height:36px}.button-row{gap:6px}.button-row button{padding:6px 14px;font-size:.8rem;min-height:36px}.legend{padding:6px 10px;gap:6px 12px}.legend-item{font-size:.75rem}.info-bar{font-size:.75rem}.checkbox-row label{font-size:.8rem}#configOut{font-size:.72rem}}
