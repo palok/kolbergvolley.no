@@ -6,53 +6,50 @@ draft = false
 All trening foregår i [Kongstenhallen](/informasjon/hjemmebane/).
 For 2026/2027 sesongen har Kolberg følgende treningstider
 
-### G19 hvit & Senior Herrer 4.div {#g19}
+### G19-A {#g19}
 
-* **Mandag** 20:30-22:00 (2 baner)
-* **Onsdag** 17:30-19:00 (2 baner)
-* **Torsdag** 20:00-22:00 (2 baner)
+* **Mandag** 20:30-22:00 (bane 1)
+* **Onsdag** 17:30-19:00 (bane 1)
+* **Fredag** 17:00-19:30 (bane 2)
 
-### Herrer 5.div 
+### Herrer 4. div.
 
-* **Mandag** 20:30-22:00
+* **Mandag** 20:30-22:00 (bane 2)
+* **Onsdag** 17:30-18:30 (bane 2)
+* **Fredag** 17:00-19:30 (bane 3)
 
-### G19 grønn
+### Herrer 5. div.
 
-* **Mandag** 19:00-20:30
-* **Tirsdag** 18:00-19:30
-* **Torsdag** 20:00-22:00
+* **Mandag** 20:30-22:00 (bane 3)
+* **Torsdag** 20:00-22:00 (bane 3, sammen med G19-B)
 
-### J19
+### G19-B
 
-* **Mandag** 19:00-20:30
-* **Onsdag** 17:30-19:00
+* **Tirsdag** 18:00-19:30 (bane 2)
+* **Torsdag** 20:00-22:00 (bane 3, sammen med Herrer 5. div.)
 
-### J17
+### J19 og J17
 
-* **Mandag** 17:30-19:00
-* **Tirsdag** 18:00-19:30
-* **Onsdag** 16:00-17:30
+* **Mandag** 19:00-20:30 (bane 2 og 3)
+* **Onsdag** 17:30-19:00 (bane 3 hele økta, også bane 2 fra 18:30)
 
 ### J15
 
-* **Mandag** 17:30-19:00
-* **Tirsdag** 18:00-19:30
+* **Mandag** 17:30-19:00 (bane 1 og 2)
+* **Tirsdag** 17:00-19:30 (bane 1 hele økta, også bane 2 fram til 18:00)
+* **Torsdag** 20:00-22:00 (bane 1 og 2)
+
+### J15-NY
+
+* **Tirsdag** 17:00-19:30 (bane 3)
+* **Onsdag** 16:00-17:30 (bane 3)
 
 ### G15
 
-* **Mandag** 19:00-20:30
-* **Onsdag** 16:00-17:30
+* **Mandag** 19:00-20:30 (bane 1)
+* **Onsdag** 16:00-17:30 (bane 1)
 
 ### G13
 
-* **Mandag** 17:30-19:00
-* **Onsdag** 16:00-17:30
-
-
-
-### Åpen hall *)
-
-* Åpen hall (og nybegynner) utgår 26/27 sesongen fordi kommunen tok vekk 30% treningstid i forhold til forrige sesong.
-
-
-*) Åpen hall er et tilbud hvor alle medlemmer er velkommen å komme og trene.
+* **Mandag** 17:30-19:00 (bane 3)
+* **Onsdag** 16:00-17:30 (bane 2)
